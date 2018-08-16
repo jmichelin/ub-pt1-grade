@@ -1,15 +1,13 @@
 (function() {
   'use strict';
-
   window._ = {};
 
   // Returns whatever value is passed as the argument. This function doesn't
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
-    /* START SOLUTION */
+      return val;
 
-    /* END SOLUTION */
   };
 
   /**
@@ -26,17 +24,34 @@
   // Return an array of the first n elements of an array. If n is undefined,
   // return just the first element.
   _.first = function(array, n) {
-    /* START SOLUTION */
-
-    /* END SOLUTION */
+    if (n === undefined) {
+      return array[0];
+    } else if(Array.isArray(array)) {
+        return array.slice(0, n);
+    } else if(array !== typeof(obj)) {
+      return [];
+    } else if (n !== typeof(number)) {
+      return [];
+    };
   };
 
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-    /* START SOLUTION */
-
-    /* END SOLUTION */
+    if (n === undefined) {
+      return array[array.length - 1];
+    } else if (n > array.length) {
+        return array;
+    } else if (n === 0) {
+        return [];
+    } else if(n < 0) {
+      return [];
+    } else if(Array.isArray(array)) {
+        return array.slice(n - 1);
+    };
+    //   return array;
+    // } else if (n < 0) {
+    //   return [];
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -44,40 +59,84 @@
   //
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
+  // var array = [1, 2, 3, 4];
+  // var obj = {name: 'Ash', computer: 'Dell'}
   _.each = function(collection, iterator) {
-    /* START SOLUTION */
-
-    /* END SOLUTION */
+        if (Array.isArray(collection)) {
+          for (var i = 0; i < collection.length; i++) {
+            iterator(collection[i], i , collection);
+          };
+        } else {
+          for (var key in collection) {
+            iterator(collection[key], key, collection);
+          };
+        };
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
-  _.indexOf = function(array, target){
-    /* START SOLUTION */
-
-    /* END SOLUTION */
+  _.indexOf = function(array, target, start){
+    for(var i = 0; i < array.length; i++) {
+      if(!array.includes(target)) {
+        return -1;
+      } else {
+        return array.indexOf((target), start);
+      };
+    };
   };
+//predicate checks whether value === true or false;
+  _.findIndex = function(array, predicate) {
+    for(var i = 0; i < array.length; i++) {
+
+      //predicate = another function that checks true /false;
+    }
+
+
+  }
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
-    /* START SOLUTION */
-
-    /* END SOLUTION */
+    var output = [];
+    _.each(collection, function(element) {
+      if(test(element)) {
+        output.push(element);
+      };
+    });
+    return output;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
-    /* START SOLUTION */
-
-    /* END SOLUTION */
+     var output = [];
+    _.each(collection, function(element) {
+      if(!test(element)) {
+        output.push(element);
+      };
+    });
+    return output;
   };
+
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
-    /* START SOLUTION */
+      var unique = [];
+      var output = [];
+      for (var i = 0; i < array.length; i++) {
+        if(unique.indexOf(array[i]) == -1) {
+          unique.push(array[i]);
+        };
+      };
+      // if(array.length === 0) {
+      //   return [];
+      // };
+      // _.each(array, function(element, i) {
+      //   if(unique.indexOf(element[i]) == -1) {
+      //     unique.push(element[i])
+      // };
+    };
 
-    /* END SOLUTION */
-  };
+
+
 
 
   // Return the results of applying an iterator to each element.

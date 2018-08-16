@@ -316,7 +316,7 @@
         const notSortedTimeEnd = performance.now();
         const notSortedTimeToRun = notSortedTimeEnd - notSortedTimeStart;
         console.log(`${sortedTimeToRun} < ${notSortedTimeToRun}`);
-        //expect(sortedTimeToRun < notSortedTimeToRun).to.be.true;
+        // expect(sortedTiRun < notSortedTimeToRun).to.be.true;
       });
     });
 
