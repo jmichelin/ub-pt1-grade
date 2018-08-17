@@ -1,13 +1,11 @@
 (function() {
   'use strict';
   window._ = {};
-
   // Returns whatever value is passed as the argument. This function doesn't
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
       return val;
-
   };
 
   /**
@@ -84,15 +82,18 @@
       };
     };
   };
+
 //predicate checks whether value === true or false;
   _.findIndex = function(array, predicate) {
+    var predicate = predicate || _.identity;
     for(var i = 0; i < array.length; i++) {
-
+      if(predicate(array[i])) {
+        return array.indexOf(array[i]);
+      };
       //predicate = another function that checks true /false;
-    }
-
-
-  }
+    };
+    return -1;
+  };
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
@@ -116,34 +117,53 @@
     return output;
   };
 
-
+  //isSorted =>
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
       var unique = [];
-      var output = [];
-      for (var i = 0; i < array.length; i++) {
-        if(unique.indexOf(array[i]) == -1) {
+      var sorted = [];
+      if (!isSorted) {
+        for (var i = 0; i < array.length; i++) {
+          if(unique.indexOf(array[i]) == -1) {
           unique.push(array[i]);
         };
       };
-      // if(array.length === 0) {
-      //   return [];
-      // };
-      // _.each(array, function(element, i) {
-      //   if(unique.indexOf(element[i]) == -1) {
-      //     unique.push(element[i])
-      // };
+      return unique;
+      };
+      // use arguments to test
+      if (typeof isSorted === true) {
+        for (var j = 0; j < array.length; j++) {
+          if(isSorted(array[j])) {
+            sorted.push(array[j]) // && sorted.length === 2;
+          };
+        };
+      };
+      return sorted;
     };
-
+// //function two(array, value) {
+//   console.log(arguments.length);
+//   console.log(arguments[1]);
+//   console.log(typeof arguments[1]);
+// }
+//
+// two('test', 13)
+//
+// //can turn arguments into an array (MDN)
+// //review typeof
 
 
 
 
   // Return the results of applying an iterator to each element.
   _.map = function(collection, iterator) {
-    /* START SOLUTION */
-
-    /* END SOLUTION */
+    var newArray = []
+    _.each(collection, function(element, i, collection) {
+      newArray.push(iterator(element, i, collection));
+      // another way to solve
+      // var newItem = iterator(element, i, collection);
+      // newArray.push(newItem);
+    });
+    return newArray
   };
 
   /*
@@ -159,10 +179,17 @@
     // TIP: map is really handy when you want to transform an array of
     // values into a new array of values. _.pluck() is solved for you
     // as an example of this.
-    /* START SOLUTION */
-
-    /* END SOLUTION */
-  };
+    // obj = {a: 1, b: 2, c:3}
+    //var array = [{a: 1, b: 2}]
+    // for (var key in obj)
+      // return _.map(collection, function(value, key, collection) {
+      //   return value;
+      return _.map(collection, function(goose) {
+        var test = {};
+        test = goose[key];
+        return test;
+      });
+    };
 
   // Reduces an array or object to a single value by repetitively calling
   // iterator(accumulator, item) for each item. accumulator should be
@@ -174,10 +201,81 @@
   // the case where a starting value is not passed, the iterator is not invoked
   // until the second element, with the first element as its second argument.
   //
+  //  var array = [1, 2, 3, 4, 5, 6]
+  // array = 'string'
   _.reduce = function(collection, iterator, accumulator) {
-    /* START SOLUTION */
-
-    /* END SOLUTION */
+   if(accumulator === undefined) {
+    accumulator = collection[0]
+    if(Array.isArray(collection)) {
+      for(var i = 1; i < collection.length; i++) {
+        accumulator = iterator(accumulator, collection[i]);
+      }
+      return accumulator;
+    } else {
+      for(var key in collection) {
+        accumulator = collection[key]
+        accumulator = iterator(accumulator, collection[key]);
+      };
+      return accumulator;
+    };
   };
+};
 
-}());
+  //   if(accumulator === undefined) {
+  //     accumulator = collection[0];
+  //     for (var i = 1; i < collection.length; i++) {
+  //       accumulator = iterator(accumulator, collection[i]);
+  //     };
+  //     return accumulator;
+  //   };
+  //   if(!Array.isArray(collection)); {
+  //     accumulator = collection[0];
+  //     for (var key in collection) {
+  //       accumulator = iterator(accumulator, collection[key])
+  //     };
+  //     return accumulator;
+  //   };
+  // };
+
+
+
+    //rguments.length <= 2) {
+    //     _.each(collection, function(element, i) {
+    //         accumulator = element + collection[i];
+    //     }
+    //
+    //   return accumulator;
+    // });
+
+  //   _.each(collection, function(element, i) {
+    //     var sum = 0;
+    //       sum = sum + collection[i];
+    //     return sum;
+    //   });
+    // };
+
+// iterator = _.each(collection, function(element, i ) {
+    //   sum = accumulator + element;
+    // });
+    // return sum;
+
+    /*
+    //starting point
+      //iterator grabs the array information => reduces the element in the array down.
+        //but accumulator === starting point.
+      //if !accumulator => itarator (starting point)
+        //collection is the array, but it grabs the first index value;
+      //Need to write 2 different conditional functions
+    array = [1, 2, 3, 4]
+    var sum = 0;
+    for(i = 0; i < arr.length; i++) {
+      sum = sum + arr[i];
+    }
+    return sum; => 10;
+
+    // if we use the arguments test, we can have an if statement:
+    //if (arguments.length === 2) then we know there is no accumulator being passed and we can start at the iterator
+    //(collection, iterator, accumulator)
+
+    */
+})();
