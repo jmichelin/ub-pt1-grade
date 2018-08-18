@@ -116,30 +116,57 @@
     });
     return output;
   };
-
+  //var array = [1, 2, 3, 4];
   //isSorted =>
   // Produce a duplicate-free version of the array.
+  function isFunction(functionToCheck) {
+    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+  };
   _.uniq = function(array, isSorted, iterator) {
-      var unique = [];
-      var sorted = [];
-      if (!isSorted) {
-        for (var i = 0; i < array.length; i++) {
-          if(unique.indexOf(array[i]) == -1) {
-          unique.push(array[i]);
-        };
+  var unique = [];
+  if (!isSorted) {
+    _.each(array, function(element) {
+      if(!unique.includes(element)) {
+        unique.push(element);
       };
-      return unique;
-      };
-      // use arguments to test
-      if (typeof isSorted === true) {
-        for (var j = 0; j < array.length; j++) {
-          if(isSorted(array[j])) {
-            sorted.push(array[j]) // && sorted.length === 2;
+    });
+    return unique
+  };
+  if(isSorted) {
+    var trueValue = [];
+    var falseValue = [];
+    _.each(array, function(element) {
+      if(isFunction(isSorted)) {
+        if(isSorted(element)) {
+          if(!falseValue.includes(element)) {
+            falseValue.push(element);
+            falseValue[0] = array[0];
+            if(!falseValue.includes(element)) {
+              trueValue.push(element);
+              trueValue.unshift(array[0]);
+            };
           };
         };
       };
-      return sorted;
-    };
+    });
+    return trueValue;
+  };
+};
+  //     var nonReturn = [];
+  //     var booleanArray = [];
+  //     for (var j = 0; j < array.length; j++) {
+  //       if(arguments[1](array[j])) { //now it is checking for the value;
+  //         booleanArray.push(array[j]);
+  //         booleanArray[0] = array[0];
+  //         if(!booleanArray.includes(array[j])) {
+  //           nonReturn.push(array[j]);
+  //           nonReturn.unshift(array[0]);
+  //         };
+  //     };
+  //   };
+  //   return nonReturn; //expect => [1, 2, 3, 4];''
+  // };
+
 // //function two(array, value) {
 //   console.log(arguments.length);
 //   console.log(arguments[1]);
@@ -204,22 +231,24 @@
   //  var array = [1, 2, 3, 4, 5, 6]
   // array = 'string'
   _.reduce = function(collection, iterator, accumulator) {
-   if(accumulator === undefined) {
-    accumulator = collection[0]
-    if(Array.isArray(collection)) {
-      for(var i = 1; i < collection.length; i++) {
-        accumulator = iterator(accumulator, collection[i]);
-      }
-      return accumulator;
-    } else {
-      for(var key in collection) {
-        accumulator = collection[key]
-        accumulator = iterator(accumulator, collection[key]);
+    if(accumulator === undefined) {
+      accumulator = collection[0];
+      collection = collection.slice(1);  //pass new copy array but return index 1 onward;
       };
-      return accumulator;
-    };
+      _.each(collection, function(element, i) {
+      accumulator = iterator(accumulator, element);
+    });
+    return accumulator;
   };
+/*
+function reduce(collection, iterator, accumulator) {
+  each(collection, function(element) {
+    accumulator = iterator(accumulator, element);
+  });
+  return acc;
 };
+
+*/
 
   //   if(accumulator === undefined) {
   //     accumulator = collection[0];
